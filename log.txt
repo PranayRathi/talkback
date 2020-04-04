@@ -1,0 +1,4 @@
+[2020-4-4 12:45:4] Pranay
+[2020-4-4 14:34:5] Node-RED is a flow-based development tool for visual programming developed originally by IBM for wiring together hardware devices, APIs and online services as part of the Internet of Things
+[2020-4-4 14:34:13] 
+[2020-4-4 14:34:34] Writes msg.payload to a file, either adding to the end or replacing the existing content. Alternatively, it can delete the file.

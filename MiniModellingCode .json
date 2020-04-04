@@ -1,0 +1,298 @@
+[
+    {
+        "id": "a8f9e09.8028f2",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "db5c8809.55a4a8",
+        "type": "ui_audio",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "group": "b54caba6.18e1e8",
+        "voice": "en-US",
+        "always": "",
+        "x": 740,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "f63855d2.ec28d8",
+        "type": "ui_form",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "label": "",
+        "group": "b54caba6.18e1e8",
+        "order": 1,
+        "width": "14",
+        "height": "15",
+        "options": [
+            {
+                "label": "Enter the Text",
+                "value": "payload",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "payload": ""
+        },
+        "payload": "",
+        "submit": "submit",
+        "cancel": "cancel",
+        "topic": "",
+        "x": 230,
+        "y": 180,
+        "wires": [
+            [
+                "ecd646fe.cc4408",
+                "c73febc6.b6f6f8"
+            ]
+        ]
+    },
+    {
+        "id": "f89acb77.d533d8",
+        "type": "ui_text",
+        "z": "a8f9e09.8028f2",
+        "group": "b54caba6.18e1e8",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Entered Data",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 710,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "ecd646fe.cc4408",
+        "type": "function",
+        "z": "a8f9e09.8028f2",
+        "name": "speech Function/English log",
+        "func": "let data = msg.payload.payload;\nvar today = new Date();\nvar date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\nvar time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\nvar dateTime ='['+ date+' '+time +'] ';\nvar log = dateTime + data\nreturn {payload : log} ;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 480,
+        "y": 240,
+        "wires": [
+            [
+                "f89acb77.d533d8",
+                "fdc15456.0a7168"
+            ]
+        ]
+    },
+    {
+        "id": "c73febc6.b6f6f8",
+        "type": "function",
+        "z": "a8f9e09.8028f2",
+        "name": "speech Function/English",
+        "func": "\nreturn msg.payload;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 470,
+        "y": 180,
+        "wires": [
+            [
+                "db5c8809.55a4a8"
+            ]
+        ]
+    },
+    {
+        "id": "fdc15456.0a7168",
+        "type": "file",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "filename": "log.txt",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 590,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a258b0e6.aa83f",
+        "type": "http in",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "url": "/talkback",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 230,
+        "y": 100,
+        "wires": [
+            [
+                "e7d99f73.b33a9"
+            ]
+        ]
+    },
+    {
+        "id": "e7d99f73.b33a9",
+        "type": "template",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html>\n<head>\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n<style>\nbody {font-family: Arial, Helvetica, sans-serif;}\nform {border: 3px solid #f1f1f1;}\n\ninput[type=text], input[type=password] {\n  width: 100%;\n  padding: 12px 20px;\n  margin: 8px 0;\n  display: inline-block;\n  border: 1px solid #ccc;\n  box-sizing: border-box;\n}\n\nbutton {\n  background-color: #4CAF50;\n  color: white;\n  padding: 14px 20px;\n  margin: 8px 0;\n  border: none;\n  cursor: pointer;\n  width: 100%;\n}\n\nbutton:hover {\n  opacity: 0.8;\n}\n\n.cancelbtn {\n  width: auto;\n  padding: 10px 18px;\n  background-color: #f44336;\n}\n\n.imgcontainer {\n  text-align: center;\n  margin: 24px 0 12px 0;\n}\n\nimg.avatar {\n  width: 40%;\n  border-radius: 50%;\n}\n\n.container {\n  padding: 16px;\n}\n\nspan.psw {\n  float: right;\n  padding-top: 16px;\n}\n\n/* Change styles for span and cancel button on extra small screens */\n@media screen and (max-width: 300px) {\n  span.psw {\n     display: block;\n     float: none; \n  }\n  .cancelbtn {\n     width: 100%;\n  }\n}\n</style>\n</head>\n<body>\n\n<h2>Login Form</h2>\n\n<form action=\"http://127.0.0.1:1880/ui\" method=\"get\">\n    <table>\n        <tr>\n            <td>\n                <div class=\"imgcontainer\">\n                    <img src=\"https://ghrcem.raisoni.net/images/logo.png\" \n                        alt=\"D:\\Project\\MniModelling\\logo.jpg\" class=\"avatar\">\n                  </div>\n            </td>\n        </tr>\n    </table>\n  <div class=\"container\">\n    <label for=\"uname\"><b>Username</b></label>\n    <input type=\"text\" placeholder=\"Enter Username\" name=\"uname\" required>\n\n    <label for=\"psw\"><b>Password</b></label>\n    <input type=\"password\" placeholder=\"Enter Password\" name=\"psw\" required>\n        \n    <button type=\"submit\">Login</button>\n    <label>\n      <input type=\"checkbox\" checked=\"checked\" name=\"remember\"> Remember me\n    </label>\n  </div>\n\n  <div class=\"container\" style=\"background-color:#f1f1f1\">\n    <button type=\"button\" class=\"cancelbtn\">Cancel</button>\n \n\n    <button onclick=\"myFunction()\">Forget Passwoed</button>\n\n        <p id=\"asd\"></p>\n        \n        <script>\n         document.getElementById(\"asd\").innerHTML = \"Password : Admin\";\n        } \n    </script>  \n  </div>\n</form>\n</body>\n</html>\n",
+        "output": "str",
+        "x": 440,
+        "y": 100,
+        "wires": [
+            [
+                "e0b7c330.fccbb8"
+            ]
+        ]
+    },
+    {
+        "id": "e0b7c330.fccbb8",
+        "type": "http response",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 630,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "2db582cb.42426e",
+        "type": "ui_text_input",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "label": "",
+        "tooltip": "",
+        "group": "3e6cefa2.b6cf2",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "text",
+        "delay": "0",
+        "topic": "",
+        "x": 240,
+        "y": 360,
+        "wires": [
+            [
+                "7501a823.757e78",
+                "a31acfff.7b278"
+            ]
+        ]
+    },
+    {
+        "id": "34dc87b4.6504e8",
+        "type": "ui_audio",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "group": "3e6cefa2.b6cf2",
+        "voice": "en-US",
+        "always": "",
+        "x": 720,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "299468a2.272e08",
+        "type": "ui_text",
+        "z": "a8f9e09.8028f2",
+        "group": "3e6cefa2.b6cf2",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Entered Data",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "x": 670,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "7501a823.757e78",
+        "type": "function",
+        "z": "a8f9e09.8028f2",
+        "name": "speech Function/English log",
+        "func": "let data = msg.payload;\nvar today = new Date();\nvar date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();\nvar time = today.getHours() + \":\" + today.getMinutes() + \":\" + today.getSeconds();\nvar dateTime ='['+ date+' '+time +'] ';\nvar log = dateTime + data\nreturn {payload : log} ;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 500,
+        "y": 420,
+        "wires": [
+            [
+                "299468a2.272e08",
+                "de27ca10.9b6608"
+            ]
+        ]
+    },
+    {
+        "id": "a31acfff.7b278",
+        "type": "function",
+        "z": "a8f9e09.8028f2",
+        "name": "speech Function/English",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 490,
+        "y": 360,
+        "wires": [
+            [
+                "34dc87b4.6504e8"
+            ]
+        ]
+    },
+    {
+        "id": "de27ca10.9b6608",
+        "type": "file",
+        "z": "a8f9e09.8028f2",
+        "name": "",
+        "filename": "log.txt",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "encoding": "none",
+        "x": 690,
+        "y": 460,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b54caba6.18e1e8",
+        "type": "ui_group",
+        "z": "",
+        "name": "Demo",
+        "tab": "eb9a025f.91c9e",
+        "disp": false,
+        "width": "14",
+        "collapse": false
+    },
+    {
+        "id": "3e6cefa2.b6cf2",
+        "type": "ui_group",
+        "z": "",
+        "name": "Default",
+        "tab": "eb9a025f.91c9e",
+        "disp": true,
+        "width": "14",
+        "collapse": false
+    },
+    {
+        "id": "eb9a025f.91c9e",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
